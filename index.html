@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f7f4">
+  <title>Travel Expense Tracker</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="app-shell">
+    <header class="hero">
+      <nav class="topbar" aria-label="Main">
+        <a class="brand" href="#" aria-label="Roamwise home">
+          <span class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M3 11.5 21 3l-8.5 18-1.8-7.7L3 11.5Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+              <path d="m10.7 13.3 4.6-4.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+            </svg>
+          </span>
+          <span>roamwise</span>
+        </a>
+        <span class="topbar-note"><span class="status-dot"></span> Your personal travel dashboard</span>
+      </nav>
+
+      <div class="hero-content">
+        <p class="eyebrow">TRAVEL BUDGET, MADE SIMPLE</p>
+        <h1>Your trip, in balance.</h1>
+        <p class="hero-copy">Keep your spending in check and make room for what matters on the journey.</p>
+      </div>
+      <div class="hero-decoration" aria-hidden="true"></div>
+    </header>
+
+    <section class="dashboard" aria-label="Trip budget summary">
+      <article class="stat-card stat-budget">
+        <div class="stat-topline">
+          <span class="stat-label">Trip budget</span>
+          <span class="stat-icon" aria-hidden="true">₹</span>
+        </div>
+        <h2 id="budgetDisplay">₹0.00</h2>
+        <p>Your total travel allowance</p>
+      </article>
+      <article class="stat-card stat-spent">
+        <div class="stat-topline">
+          <span class="stat-label">Total spent</span>
+          <span class="stat-icon" aria-hidden="true">↗</span>
+        </div>
+        <h2 id="spentDisplay">₹0.00</h2>
+        <p>Across all recorded expenses</p>
+      </article>
+      <article class="stat-card stat-balance">
+        <div class="stat-topline">
+          <span class="stat-label">Available balance</span>
+          <span class="stat-icon" aria-hidden="true">✦</span>
+        </div>
+        <h2 id="balanceDisplay">₹0.00</h2>
+        <p>What’s left for your trip</p>
+      </article>
+      <article class="stat-card stat-monthly">
+        <div class="stat-topline">
+          <span id="monthlyLabel" class="stat-label">Spent this month</span>
+          <span class="stat-icon" aria-hidden="true">◷</span>
+        </div>
+        <h2 id="monthlySpentDisplay">₹0.00</h2>
+        <p id="monthlyExpenseCount">0 expenses this month</p>
+      </article>
+    </section>
+
+    <section class="panel budget-panel">
+      <div class="budget-top">
+        <div class="section-heading">
+          <span class="section-kicker">PLAN AHEAD</span>
+          <h2>Set your trip budget</h2>
+          <p>Choose a limit that makes your trip feel comfortable.</p>
+        </div>
+        <form id="budgetForm" class="budget-form">
+          <label for="budget">Budget amount</label>
+          <div class="input-with-button">
+            <span class="currency-prefix" aria-hidden="true">₹</span>
+            <input type="number" id="budget" placeholder="e.g. 50,000" min="0.01" step="0.01" required>
+            <button type="submit">Save budget</button>
+          </div>
+        </form>
+      </div>
+      <div class="budget-progress">
+        <div class="progress-copy">
+          <span>Budget used</span>
+          <span id="budgetProgressText">Set a budget to track your spending.</span>
+        </div>
+        <div id="budgetProgress" class="progress-track" role="progressbar" aria-label="Trip budget used" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+          <span id="budgetProgressBar"></span>
+        </div>
+      </div>
+    </section>
+
+    <div class="content-grid">
+      <section class="panel expense-panel">
+        <div class="section-heading">
+          <span class="section-kicker">LOG A PURCHASE</span>
+          <h2>Add an expense</h2>
+          <p>Capture the little things before they add up.</p>
+        </div>
+        <form id="expenseForm" class="expense-form">
+          <div class="field">
+            <label for="description">Expense name</label>
+            <input id="description" placeholder="e.g. Dinner by the beach" required>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label for="amount">Amount</label>
+              <div class="field-prefix">
+                <span aria-hidden="true">₹</span>
+                <input id="amount" type="number" placeholder="0.00" min="0.01" step="0.01" required>
+              </div>
+            </div>
+            <div class="field">
+              <label for="category">Category</label>
+              <select id="category">
+                <option>Food</option>
+                <option>Transport</option>
+                <option>Hotel</option>
+                <option>Shopping</option>
+                <option>Other</option>
+              </select>
+            </div>
+          </div>
+          <div class="field">
+            <label for="date">Date</label>
+            <input id="date" type="date" required>
+          </div>
+          <button class="primary-button" type="submit"><span aria-hidden="true">＋</span> Add expense</button>
+        </form>
+      </section>
+
+      <section class="panel breakdown-panel">
+        <div class="section-heading">
+          <span class="section-kicker">YOUR SPENDING</span>
+          <h2>Expense breakdown</h2>
+          <p>See where your travel budget is going.</p>
+        </div>
+        <div class="chart-container">
+          <canvas id="expenseChart" aria-label="Expense breakdown by category" role="img" hidden></canvas>
+          <div id="chartEmptyState" class="empty-state chart-empty">
+            <span class="empty-icon" aria-hidden="true">◌</span>
+            <p>Your spending breakdown will appear here.</p>
+            <span>Add an expense to get started.</span>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <section class="panel history-panel">
+      <div class="history-heading">
+        <div class="section-heading">
+          <span class="section-kicker">ON THE BOOKS</span>
+          <h2>Recent expenses</h2>
+          <p>A running list of everything you’ve added.</p>
+        </div>
+        <span id="expenseCount" class="count-badge">0 expenses</span>
+      </div>
+      <div class="history-tools">
+        <label class="search-control">
+          <span aria-hidden="true">⌕</span>
+          <input id="expenseSearch" type="search" placeholder="Search expenses..." aria-label="Search expenses">
+        </label>
+        <select id="categoryFilter" aria-label="Filter expenses by category">
+          <option value="">All categories</option>
+          <option>Food</option>
+          <option>Transport</option>
+          <option>Hotel</option>
+          <option>Shopping</option>
+          <option>Other</option>
+        </select>
+        <button id="exportButton" class="secondary-button" type="button">Export CSV</button>
+      </div>
+      <div id="expenseList" class="expense-list"></div>
+      <div id="expenseEmptyState" class="empty-state history-empty">
+        <span class="empty-icon" aria-hidden="true">✦</span>
+        <p id="expenseEmptyTitle">No expenses yet</p>
+        <span id="expenseEmptyMessage">Your travel purchases will show up here.</span>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <span>roamwise</span>
+      <span>Your journey, thoughtfully tracked.</span>
+    </footer>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
